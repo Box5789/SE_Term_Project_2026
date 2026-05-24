@@ -1,0 +1,73 @@
+[
+  {
+    "id": "ISSUE-001",
+    "projectId": "PROJECT-001",
+    "title": "로그인 버튼 클릭 시 오류 발생",
+    "description": "로그인 화면에서 버튼을 클릭하면 인증 예외가 발생한다.",
+    "reporterId": "tester2",
+    "reportedDate": "2026-05-18T14:10:00",
+    "fixerId": "dev1",
+    "assigneeId": "dev1",
+    "priority": "MAJOR",
+    "status": "CLOSED",
+    "comments": [
+      {
+        "id": "COMMENT-001",
+        "issueId": "ISSUE-001",
+        "authorId": "tester2",
+        "content": "재현 절차를 확인했습니다.",
+        "createdAt": "2026-05-18T14:15:00"
+      },
+      {
+        "id": "COMMENT-FIX-001",
+        "issueId": "ISSUE-001",
+        "authorId": "dev1",
+        "content": "수정 완료 후 fixed 처리했습니다.",
+        "createdAt": "2026-05-18T17:10:00"
+      }
+    ]
+  },
+  {
+    "id": "ISSUE-002",
+    "projectId": "PROJECT-001",
+    "title": "검색 결과 필터가 초기화됨",
+    "description": "이슈 검색 후 상세 화면에서 돌아오면 상태 필터가 사라진다.",
+    "reporterId": "tester3",
+    "reportedDate": "2026-05-19T15:30:00",
+    "fixerId": "dev2",
+    "assigneeId": "dev2",
+    "priority": "MINOR",
+    "status": "RESOLVED",
+    "comments": [
+      {
+        "id": "COMMENT-002",
+        "issueId": "ISSUE-002",
+        "authorId": "tester3",
+        "content": "상세 화면 이동 후 필터가 초기화됩니다.",
+        "createdAt": "2026-05-19T15:35:00"
+      }
+    ]
+  },
+  {
+    "id": "ISSUE-003",
+    "projectId": "PROJECT-001",
+    "title": "JSON 저장 후 댓글 순서가 바뀜",
+    "description": "저장소를 다시 로드하면 댓글 history가 작성 시간 순서로 나오지 않는다.",
+    "reporterId": "tester4",
+    "reportedDate": "2026-05-20T11:40:00",
+    "fixerId": "dev5",
+    "assigneeId": "dev5",
+    "priority": "CRITICAL",
+    "status": "FIXED",
+    "comments": [
+      {
+        "id": "COMMENT-003",
+        "issueId": "ISSUE-003",
+        "authorId": "tester4",
+        "content": "댓글 순서가 뒤집힌 상태로 표시됩니다.",
+        "createdAt": "2026-05-20T11:45:00"
+      }
+    ]
+  }
+]
+
