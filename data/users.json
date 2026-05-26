@@ -1,0 +1,93 @@
+[
+  {
+    "id": "admin",
+    "username": "admin",
+    "role": "ADMIN"
+  },
+  {
+    "id": "PL1",
+    "username": "PL1",
+    "role": "PL"
+  },
+  {
+    "id": "PL2",
+    "username": "PL2",
+    "role": "PL"
+  },
+  {
+    "id": "dev1",
+    "username": "dev1",
+    "role": "DEV"
+  },
+  {
+    "id": "dev2",
+    "username": "dev2",
+    "role": "DEV"
+  },
+  {
+    "id": "dev3",
+    "username": "dev3",
+    "role": "DEV"
+  },
+  {
+    "id": "dev4",
+    "username": "dev4",
+    "role": "DEV"
+  },
+  {
+    "id": "dev5",
+    "username": "dev5",
+    "role": "DEV"
+  },
+  {
+    "id": "dev6",
+    "username": "dev6",
+    "role": "DEV"
+  },
+  {
+    "id": "dev7",
+    "username": "dev7",
+    "role": "DEV"
+  },
+  {
+    "id": "dev8",
+    "username": "dev8",
+    "role": "DEV"
+  },
+  {
+    "id": "dev9",
+    "username": "dev9",
+    "role": "DEV"
+  },
+  {
+    "id": "dev10",
+    "username": "dev10",
+    "role": "DEV"
+  },
+  {
+    "id": "tester1",
+    "username": "tester1",
+    "role": "TESTER"
+  },
+  {
+    "id": "tester2",
+    "username": "tester2",
+    "role": "TESTER"
+  },
+  {
+    "id": "tester3",
+    "username": "tester3",
+    "role": "TESTER"
+  },
+  {
+    "id": "tester4",
+    "username": "tester4",
+    "role": "TESTER"
+  },
+  {
+    "id": "tester5",
+    "username": "tester5",
+    "role": "TESTER"
+  }
+]
+
