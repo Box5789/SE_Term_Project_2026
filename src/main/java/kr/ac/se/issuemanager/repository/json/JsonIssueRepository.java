@@ -19,7 +19,8 @@ public class JsonIssueRepository implements IssueRepository {
     }
 
     @Override
-    public List<Issue> findAll() {
+    public synchronized List<Issue> findAll() {
+        reload();
         return issues.stream()
                 .sorted(Comparator.comparing(Issue::getReportedDate))
                 .toList();
@@ -33,12 +34,14 @@ public class JsonIssueRepository implements IssueRepository {
     }
 
     @Override
-    public Optional<Issue> findById(String id) {
+    public synchronized Optional<Issue> findById(String id) {
+        reload();
         return issues.stream().filter(issue -> issue.getId().equals(id)).findFirst();
     }
 
     @Override
-    public Issue save(Issue issue) {
+    public synchronized Issue save(Issue issue) {
+        reload();
         issues.removeIf(existing -> existing.getId().equals(issue.getId()));
         issues.add(issue);
         store.save(issues);
@@ -46,10 +49,14 @@ public class JsonIssueRepository implements IssueRepository {
     }
 
     @Override
-    public void saveAll(List<Issue> issues) {
+    public synchronized void saveAll(List<Issue> issues) {
         this.issues.clear();
         this.issues.addAll(new ArrayList<>(issues));
         store.save(this.issues);
     }
-}
 
+    private void reload() {
+        issues.clear();
+        issues.addAll(store.load());
+    }
+}
