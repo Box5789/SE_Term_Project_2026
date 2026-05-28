@@ -311,7 +311,11 @@ public class SwingMain {
 
     private void refreshIssues() {
         Project project = (Project) projectBox.getSelectedItem();
-        currentIssues = controller.searchIssues(project == null ? null : project.getId(), null, null);
+        IssueStatus status = (IssueStatus) statusFilterBox.getSelectedItem();
+        String keyword = keywordField.getText();
+    
+        currentIssues = controller.searchIssues(project == null ? null : project.getId(), status, keyword);
+    
         tableModel.setRowCount(0);
         for (Issue issue : currentIssues) {
             tableModel.addRow(new Object[]{issue.getId(), issue.getTitle(), issue.getStatus(), nameOf(issue.getAssigneeId())});
