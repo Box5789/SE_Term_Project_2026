@@ -43,12 +43,16 @@ public class SwingMain {
     private final JTable table = new JTable(tableModel);
     private final JTextArea detailArea = new JTextArea();
     private final JTextArea commentArea = new JTextArea(4, 30);
+    
+    private final JTextField titleField = new JTextField(15);
+    private final JTextArea descriptionField = new JTextArea(2, 20);
+    private final JComboBox<Priority> priorityBox = new JComboBox<>(Priority.values());
     private List<Issue> currentIssues = List.of();
-
 
     private final JComboBox<IssueStatus> statusFilterBox = new JComboBox<>();
     private final JTextField keywordField = new JTextField(14);
     private final JTextArea statisticsArea = new JTextArea(8, 30);
+    private JComboBox<User> sharedAssigneeBox;
  
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new SwingMain().show());
@@ -64,14 +68,18 @@ public class SwingMain {
         frame.add(topPanel(),      BorderLayout.NORTH);
         frame.add(searchPanel(),   BorderLayout.WEST);   
         frame.add(detailPanel(),   BorderLayout.CENTER);
-        frame.add(actionPanel(),   BorderLayout.SOUTH);
+        
+        JPanel bottomContainer = new JPanel(new BorderLayout(4, 4));
+        bottomContainer.add(actionPanel(), BorderLayout.CENTER);
+        bottomContainer.add(registerPanel(), BorderLayout.SOUTH);
+        frame.add(bottomContainer, BorderLayout.SOUTH);
+        
         table.getSelectionModel().addListSelectionListener(event -> showSelectedIssue());
         refreshIssues();
-        frame.setSize(1100, 680);
+        frame.setSize(1200, 750); 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-
 
     private JPanel topPanel() {
         JButton refresh = new JButton("새로고침");
@@ -142,9 +150,45 @@ public class SwingMain {
         panel.setBorder(BorderFactory.createTitledBorder("댓글 / 상태 변경"));
         panel.add(new JScrollPane(commentArea), BorderLayout.CENTER);
         panel.add(buttons, BorderLayout.EAST);
-        return panel;
+
+        return panel; 
     }
 
+    private JPanel registerPanel() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        panel.setBorder(BorderFactory.createTitledBorder("신규 이슈 등록"));
+
+        priorityBox.setSelectedItem(Priority.MAJOR);
+
+        JButton registerBtn = new JButton("이슈 등록");
+        registerBtn.addActionListener(event -> runSafely(() -> {
+            Project selectedProj = selectedProject();
+            if (selectedProj == null) {
+                throw new ServiceException("프로젝트를 선택하세요.");
+            }
+            Issue issue = controller.registerIssue(
+                selectedProj.getId(),
+                selectedUser().getId(),
+                titleField.getText(),
+                descriptionField.getText(),
+                (Priority) priorityBox.getSelectedItem()
+            );
+            titleField.setText("");
+            descriptionField.setText("");
+            refreshIssues();
+            JOptionPane.showMessageDialog(null, "이슈가 정상 등록되었습니다! [ID: " + issue.getId() + "]");
+        }));
+
+        panel.add(new JLabel("제목:"));
+        panel.add(titleField);
+        panel.add(new JLabel("설명:"));
+        panel.add(new JScrollPane(descriptionField));
+        panel.add(new JLabel("우선순위:"));
+        panel.add(priorityBox);
+        panel.add(registerBtn);
+
+        return panel;
+    }
 
     private JPanel searchPanel() {
         statusFilterBox.addItem(null);
@@ -169,24 +213,6 @@ public class SwingMain {
  
         JScrollPane tableScroll = new JScrollPane(table);
  
-        JTextField titleField      = new JTextField(12);
-        JTextArea  descField       = new JTextArea(2, 12);
-        JComboBox<Priority> prioBox = new JComboBox<>(Priority.values());
-        prioBox.setSelectedItem(Priority.MAJOR);
-        JButton registerBtn = new JButton("이슈 등록");
-        registerBtn.addActionListener(e -> runSafely(() -> {
-            Issue issue = controller.registerIssue(selectedProject().getId(), selectedUser().getId(),
-                    titleField.getText(), descField.getText(), (Priority) prioBox.getSelectedItem());
-            titleField.setText(""); descField.setText("");
-            refreshIssues();
-        }));
- 
-        JPanel registerForm = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 2));
-        registerForm.setBorder(BorderFactory.createTitledBorder("신규 이슈 등록"));
-        registerForm.add(new JLabel("제목:")); registerForm.add(titleField);
-        registerForm.add(new JLabel("설명:")); registerForm.add(new JScrollPane(descField));
-        registerForm.add(new JLabel("우선순위:")); registerForm.add(prioBox);
-        registerForm.add(registerBtn);
  
         JComboBox<User> assigneeBox = new JComboBox<>();
         controller.listDevelopers().forEach(assigneeBox::addItem);
@@ -206,7 +232,6 @@ public class SwingMain {
         JPanel top = new JPanel(new BorderLayout(4, 4));
         top.add(filterRow,    BorderLayout.NORTH);
         top.add(tableScroll,  BorderLayout.CENTER);
-        top.add(registerForm, BorderLayout.SOUTH);
  
         JPanel left = new JPanel(new BorderLayout(4, 4));
         left.add(top,        BorderLayout.NORTH);
@@ -274,8 +299,6 @@ public class SwingMain {
         return panel;
     }
  
-    private JComboBox<User> sharedAssigneeBox;
- 
     private void addComment() {
         Issue issue = selectedIssue();
         controller.addComment(issue.getId(), selectedUser().getId(), commentArea.getText());
@@ -306,8 +329,6 @@ public class SwingMain {
                 .collect(Collectors.joining("\n"));
         JOptionPane.showMessageDialog(null, text, "추천 담당자", JOptionPane.INFORMATION_MESSAGE);
     }
-
-
 
     private void refreshIssues() {
         Project project = (Project) projectBox.getSelectedItem();
