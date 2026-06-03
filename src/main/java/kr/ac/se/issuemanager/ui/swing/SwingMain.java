@@ -145,11 +145,23 @@ public class SwingMain {
         buttons.add(assignBtn);
         buttons.add(closed);
         buttons.add(recommendBtn);
- 
+
+        sharedAssigneeBox = new JComboBox<>();
+        controller.listDevelopers().forEach(sharedAssigneeBox::addItem);
+        
+        JPanel assignComboPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
+        assignComboPanel.add(new JLabel("배정할 Dev:"));
+        assignComboPanel.add(sharedAssigneeBox);
+
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 6));
+        rightPanel.add(assignComboPanel, BorderLayout.NORTH);
+        rightPanel.add(buttons, BorderLayout.CENTER);
+
         JPanel panel = new JPanel(new BorderLayout(8, 8));
         panel.setBorder(BorderFactory.createTitledBorder("댓글 / 상태 변경"));
-        panel.add(new JScrollPane(commentArea), BorderLayout.CENTER);
-        panel.add(buttons, BorderLayout.EAST);
+        
+        panel.add(new JScrollPane(commentArea), BorderLayout.CENTER); 
+        panel.add(rightPanel, BorderLayout.EAST); 
 
         return panel; 
     }
@@ -214,14 +226,6 @@ public class SwingMain {
         JScrollPane tableScroll = new JScrollPane(table);
  
  
-        JComboBox<User> assigneeBox = new JComboBox<>();
-        controller.listDevelopers().forEach(assigneeBox::addItem);
-        this.sharedAssigneeBox = assigneeBox;
- 
-        JPanel assignRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 2));
-        assignRow.setBorder(BorderFactory.createTitledBorder("배정 Dev 선택"));
-        assignRow.add(new JLabel("담당 Dev:")); assignRow.add(assigneeBox);
- 
         statisticsArea.setEditable(false);
         JPanel statPanel = new JPanel(new BorderLayout());
         statPanel.setBorder(BorderFactory.createTitledBorder("이슈 통계"));
@@ -235,8 +239,7 @@ public class SwingMain {
  
         JPanel left = new JPanel(new BorderLayout(4, 4));
         left.add(top,        BorderLayout.NORTH);
-        left.add(assignRow,  BorderLayout.CENTER);
-        left.add(statPanel,  BorderLayout.SOUTH);
+        left.add(statPanel,  BorderLayout.CENTER); 
  
         JPanel wrapper = new JPanel(new BorderLayout(4, 4));
         wrapper.add(left,       BorderLayout.CENTER);
